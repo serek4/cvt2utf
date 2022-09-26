@@ -67,6 +67,8 @@ def detect_codec(bytedata, filename):
         else:
             try:
                 bytedata.decode(codec, 'strict')
+                if codec == "utf_8_sig" and bytedata[:3] != b'\xef\xbb\xbf': # utf_8_sig bytes not detected
+                    codec = "utf_8"
                 return codec
             except UnicodeDecodeError:
                 log.debug(f"{filename} is not {codec}-encoded.")
